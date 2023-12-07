@@ -14,10 +14,22 @@ const getById = async (req, res) => {
         const { articleId } = req.params;
         const [result] = await ArticleModel.selectById(articleId);
         if (result.length === 0) return res.json({ error: 'EL ID del artículo no existe.' });
+        // const tagsArray = result[0].tags.split(',');
+        // console.log(tagsArray);
         res.json(result[0]);
     } catch (error) {
         console.log(error);
-        res.json({ fatal: error.message });
+        res.json({ error: error.message });
+    }
+}
+
+const getByUser = async (req, res) => {
+    try {
+        // const { id: staffId } = req.user;
+        const [result] = await ArticleModel.selectByUser(req.user.id);
+        res.json(result);
+    } catch (error) {
+        res.json({ error: error.message });
     }
 }
 
@@ -54,4 +66,4 @@ const deleteArticle = async (req, res) => {
     }
 }
 
-module.exports = { getAllArticles, createArticle, getById, updateArticle, deleteArticle };
+module.exports = { getAllArticles, createArticle, getById, updateArticle, deleteArticle, getByUser };

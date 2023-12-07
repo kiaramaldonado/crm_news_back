@@ -2,6 +2,7 @@ const router = require('express').Router();
 const ArticlesController = require('../../controllers/articles.controller');
 
 router.get('/', ArticlesController.getAllArticles);
+router.get('/user', ArticlesController.getByUser);
 router.get('/:articleId', ArticlesController.getById);
 
 router.post('/', ArticlesController.createArticle);
