@@ -25,8 +25,26 @@ const getById = async (req, res) => {
 
 const getByUser = async (req, res) => {
     try {
-        // const { id: staffId } = req.user;
         const [result] = await ArticleModel.selectByUser(req.user.id);
+        res.json(result);
+    } catch (error) {
+        res.json({ error: error.message });
+    }
+}
+
+const getByCategory = async (req, res) => {
+    try {
+        const { category } = req.params;
+        const [result] = await ArticleModel.selectByCategory(category);
+        res.json(result)
+    } catch (error) {
+        res.json({ error: error.message });
+    }
+}
+
+const getAllCategories = async (req, res) => {
+    try {
+        const [result] = await ArticleModel.selectAllCategories();
         res.json(result);
     } catch (error) {
         res.json({ error: error.message });
@@ -37,7 +55,6 @@ const createArticle = async (req, res) => {
     try {
         const [result] = await ArticleModel.insert(req.body);
         const [article] = await ArticleModel.selectById(result.insertId);
-        console.log(article);
         res.json(article[0]);
     } catch (error) {
         res.json({ error: error.message });
@@ -66,4 +83,4 @@ const deleteArticle = async (req, res) => {
     }
 }
 
-module.exports = { getAllArticles, createArticle, getById, updateArticle, deleteArticle, getByUser };
+module.exports = { getAllArticles, createArticle, getById, updateArticle, deleteArticle, getByUser, getByCategory, getAllCategories };
