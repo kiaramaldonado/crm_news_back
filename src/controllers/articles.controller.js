@@ -9,6 +9,15 @@ const getAllArticles = async (req, res) => {
     }
 }
 
+const getAllPublished = async (req, res) => {
+    try {
+        const [result] = await ArticleModel.selectAllPublished();
+        res.json(result);
+    } catch (error) {
+        res.json({ error: error.message });
+    }
+}
+
 const getById = async (req, res) => {
     try {
         const { articleId } = req.params;
@@ -83,4 +92,4 @@ const deleteArticle = async (req, res) => {
     }
 }
 
-module.exports = { getAllArticles, createArticle, getById, updateArticle, deleteArticle, getByUser, getByCategory, getAllCategories };
+module.exports = { getAllArticles, createArticle, getById, updateArticle, deleteArticle, getByUser, getByCategory, getAllCategories, getAllPublished };

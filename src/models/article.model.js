@@ -2,6 +2,10 @@ const selectAll = () => {
     return db.query('select * from articles');
 }
 
+const selectAllPublished = () => {
+    return db.query('select * from articles where status = "publicado"');
+}
+
 const selectById = (articleId) => {
     return db.query('select * from articles where id = ?', [articleId]);
 }
@@ -30,4 +34,4 @@ const deleteArticle = (articleId) => {
     return db.query('delete from articles where id = ?', [articleId]);
 }
 
-module.exports = { selectAll, selectById, insert, updateArticle, deleteArticle, selectByUser, selectByCategory, selectAllCategories };
+module.exports = { selectAll, selectById, insert, updateArticle, deleteArticle, selectByUser, selectByCategory, selectAllCategories, selectAllPublished };
