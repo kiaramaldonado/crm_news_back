@@ -3,7 +3,7 @@ const selectAll = () => {
 }
 
 const selectAllPublished = () => {
-    return db.query('select a.*, i.url, i.caption, i.source from articles_has_images as ai join articles as a on a.id = ai.article_id join images as i on i.id = ai.image_id where a.status = "publicado"');
+    return db.query('select a.*, i.url, i.source, ai.caption from articles_has_images as ai join articles as a on a.id = ai.article_id join images as i on i.id = ai.image_id where a.status = "publicado"');
 }
 
 // const selectById = (articleId) => {
@@ -11,7 +11,7 @@ const selectAllPublished = () => {
 // }
 
 const selectById = (articleId) => {
-    return db.query('select a.*, i.url, ai.caption, i.source from articles_has_images as ai join articles as a on a.id = ai.article_id join images as i on i.id = ai.image_id where ai.article_id = ?', [articleId]);
+    return db.query('select a.*, i.url, i.source, ai.caption from articles_has_images as ai join articles as a on a.id = ai.article_id join images as i on i.id = ai.image_id where ai.article_id = ?', [articleId]);
 }
 
 const selectByUser = (userId) => {
