@@ -4,7 +4,7 @@ const { checkToken } = require('../../helpers/middlewares')
 
 router.get('/', UsersController.getAllUsers);
 router.get('/role/:role', UsersController.getByRole);
-router.get('/:userId', UsersController.getById);
+router.get('/profile', checkToken, UsersController.getById);
 
 router.post('/', UsersController.createUser);
 router.post('/login', UsersController.login);

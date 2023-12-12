@@ -13,7 +13,7 @@ const getAllUsers = async (req, res) => {
 
 const getById = async (req, res) => {
     try {
-        const { userId } = req.params;
+        const userId = req.user.id;
         const [result] = await UserModel.selectById(userId);
         if (result.length === 0) return res.json({ error: 'EL ID del usuario no existe.' });
         res.json(result[0]);
