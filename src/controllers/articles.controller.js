@@ -62,7 +62,11 @@ const getAllCategories = async (req, res) => {
 
 const createArticle = async (req, res) => {
     try {
-        const [result] = await ArticleModel.insert(req.body);
+        const { title, excerpt, body, tags, status, category_id, url, source, caption } = req.body;
+        const creator_id = req.user.id;
+        const author_name = req.user.name;
+        const [result] = await ArticleModel.insert({ author_name, title, excerpt, body, tags, status, category_id, creator_id });
+        const [image] = await ArticleModel.insertImage({ url, source, caption });
         const [article] = await ArticleModel.selectById(result.insertId);
         res.json(article[0]);
     } catch (error) {
