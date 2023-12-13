@@ -23,8 +23,6 @@ const getById = async (req, res) => {
         const { articleId } = req.params;
         const [result] = await ArticleModel.selectById(articleId);
         if (result.length === 0) return res.json({ error: 'EL ID del artículo no existe.' });
-        // const tagsArray = result[0].tags.split(',');
-        // console.log(tagsArray);
         res.json(result[0]);
     } catch (error) {
         console.log(error);
@@ -62,10 +60,10 @@ const getAllCategories = async (req, res) => {
 
 const createArticle = async (req, res) => {
     try {
-        const { title, excerpt, body, tags, status, category_id, url, source, caption } = req.body;
+        const { title, excerpt, body, status, category_id, url, source, caption } = req.body;
         const creator_id = req.user.id;
         const author_name = req.user.name;
-        const [result] = await ArticleModel.insert({ author_name, title, excerpt, body, tags, status, category_id, creator_id });
+        const [result] = await ArticleModel.insert({ author_name, title, excerpt, body, status, category_id, creator_id });
         const [image] = await ArticleModel.insertImage({ url, source });
         console.log(image.insertId);
         const [articlesHasImages] = await ArticleModel.insertArticlesHasImages(image.insertId, result.insertId, { caption });
