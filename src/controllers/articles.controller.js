@@ -76,6 +76,23 @@ const createArticle = async (req, res) => {
     }
 }
 
+const asignArticle = async (req, res) => {
+    try {
+        const {user_id, comments, actual_status } = req.body;
+        const {articleId}  = req.params;
+        console.log(articleId);
+        console.log(req.body)
+        const [nuevoRegistro] = await ArticleModel.insertUsersHasArticles(user_id, articleId, comments, actual_status);
+        const [article] = await ArticleModel.selectById(articleId);
+        const [statusArticle] = await ArticleModel.updateStatusArticle(articleId, {status:actual_status})
+        console.log(nuevoRegistro[0]);
+        console.log(statusArticle);
+        res.json(nuevoRegistro[0]);
+    } catch (error) {
+        res.json({ error: error.message });
+    }
+}
+
 const updateArticle = async (req, res) => {
     try {
         const { articleId } = req.params;
@@ -98,4 +115,4 @@ const deleteArticle = async (req, res) => {
     }
 }
 
-module.exports = { getAllArticles, createArticle, getById, updateArticle, deleteArticle, getByUser, getByCategory, getAllCategories, getAllPublished };
+module.exports = { getAllArticles, createArticle, getById, updateArticle, deleteArticle, getByUser, getByCategory, getAllCategories, getAllPublished, asignArticle };

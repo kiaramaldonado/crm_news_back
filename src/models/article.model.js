@@ -46,6 +46,10 @@ const updateArticle = (articleId, { title, excerpt, body, category_id }) => {
     return db.query('update articles set title = ?, excerpt = ?, body = ?, category_id = ? where id = ?', [title, excerpt, body, category_id, articleId]);
 }
 
+const updateStatusArticle = (articleId, {status}) => {
+    return db.query('update articles set status = ? where id = ?', [status, articleId]);
+}
+
 // const updateArticle = (articleId, { title, excerpt, body, category_id, url, source, caption }) => {
 //     return db.query('update articles join articles_has_images as ai on ai.article_id = articles.id join images on ai.image_id = images.id set articles.title = ?, articles.excerpt = ?, articles.body = ?, articles.category_id = ?, images.url = ?, images.source = ?, images.caption = ? WHERE articles.id = ?', [title, excerpt, body, category_id, url, source, caption, articleId]);
 // }
@@ -54,4 +58,4 @@ const deleteArticle = (articleId) => {
     return db.query('delete from articles where id = ?', [articleId]);
 }
 
-module.exports = { selectAll, selectById, insert, updateArticle, deleteArticle, selectByUser, selectByCategory, selectAllCategories, selectAllPublished, insertImage, insertArticlesHasImages, insertUsersHasArticles };
+module.exports = { selectAll, selectById, insert, updateArticle, deleteArticle, selectByUser, selectByCategory, selectAllCategories, selectAllPublished, insertImage, insertArticlesHasImages, insertUsersHasArticles, updateStatusArticle };

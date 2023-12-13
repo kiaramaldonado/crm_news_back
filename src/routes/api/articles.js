@@ -10,6 +10,7 @@ router.get('/published', ArticlesController.getAllPublished);
 router.get('/:articleId', ArticlesController.getById);
 
 router.post('/', checkToken, ArticlesController.createArticle);
+router.post('/asign/:articleId', checkToken, ArticlesController.asignArticle);
 
 router.put('/:articleId', checkToken, ArticlesController.updateArticle);
 
