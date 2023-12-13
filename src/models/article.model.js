@@ -15,7 +15,7 @@ const selectById = (articleId) => {
 }
 
 const selectByUser = (userId) => {
-    return db.query('select a.author_name, a.title, a.excerpt, a.body, a.creation_date, i.url, ai.caption, i.source, ua.actual_status from users_has_articles as ua join articles as a on a.id = ua.articles_id join articles_has_images as ai on ai.article_id = a.id join images as i on i.id = ai.image_id where ua.user_id = ?', [userId]);
+    return db.query('select a.*, i.url, ai.caption, i.source, ua.actual_status from users_has_articles as ua join articles as a on a.id = ua.articles_id join articles_has_images as ai on ai.article_id = a.id join images as i on i.id = ai.image_id where ua.user_id = ?', [userId]);
 }
 
 const selectByCategory = (category) => {
@@ -38,6 +38,10 @@ const insertArticlesHasImages = (imageId, articleId, { caption }) => {
     return db.query('insert into articles_has_images (image_id, article_id, caption) values (?,?,?)', [imageId, articleId, caption]);
 }
 
+const insertUsersHasArticles = (user_id, articles_id, comments, actual_status = 'borrador') => { 
+    return db.query('insert into news.users_has_articles (user_id, articles_id, comments, actual_status) values (?, ?, ?, ?)' , [user_id, articles_id, comments, actual_status])
+}
+
 const updateArticle = (articleId, { title, excerpt, body, category_id }) => {
     return db.query('update articles set title = ?, excerpt = ?, body = ?, category_id = ? where id = ?', [title, excerpt, body, category_id, articleId]);
 }
@@ -50,4 +54,4 @@ const deleteArticle = (articleId) => {
     return db.query('delete from articles where id = ?', [articleId]);
 }
 
-module.exports = { selectAll, selectById, insert, updateArticle, deleteArticle, selectByUser, selectByCategory, selectAllCategories, selectAllPublished, insertImage, insertArticlesHasImages };
+module.exports = { selectAll, selectById, insert, updateArticle, deleteArticle, selectByUser, selectByCategory, selectAllCategories, selectAllPublished, insertImage, insertArticlesHasImages, insertUsersHasArticles };
