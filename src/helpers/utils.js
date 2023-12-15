@@ -10,4 +10,8 @@ const createToken = (user) => {
     return jwt.sign(payload, process.env.SECRET_KEY);
 }
 
-module.exports = { createToken };
+const transformTitle = (title) => {
+    return title.toLowerCase().replace(/[,\s]+/g, '-').normalize("NFD").replace(/[\u0300-\u036f"'`´‘’“”:]/g, "").replace(/ñ/g, 'n');
+}
+
+module.exports = { createToken, transformTitle };

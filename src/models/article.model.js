@@ -26,8 +26,8 @@ const selectAllCategories = () => {
     return db.query('select * from categories');
 }
 
-const insert = ({ author_name, title, excerpt, body, status = 'borrador', category_id, creator_id }) => {
-    return db.query('insert into articles (author_name, title, excerpt, body, status, category_id, creator_id) values (?,?,?,?,?,?,?)', [author_name, title, excerpt, body, status, category_id, creator_id]);
+const insert = ({ author_name, title, excerpt, body, slug, status = 'borrador', category_id, creator_id }) => {
+    return db.query('insert into articles (author_name, title, excerpt, body, slug, status, category_id, creator_id) values (?,?,?,?,?,?,?,?)', [author_name, title, excerpt, body, slug, status, category_id, creator_id]);
 }
 
 const insertImage = ({ url, source }) => {
@@ -38,15 +38,15 @@ const insertArticlesHasImages = (imageId, articleId, { caption }) => {
     return db.query('insert into articles_has_images (image_id, article_id, caption) values (?,?,?)', [imageId, articleId, caption]);
 }
 
-const insertUsersHasArticles = (user_id, articles_id, comments, actual_status = 'borrador') => { 
-    return db.query('insert into news.users_has_articles (user_id, articles_id, comments, actual_status) values (?, ?, ?, ?)' , [user_id, articles_id, comments, actual_status])
+const insertUsersHasArticles = (user_id, articles_id, comments, actual_status = 'borrador') => {
+    return db.query('insert into news.users_has_articles (user_id, articles_id, comments, actual_status) values (?, ?, ?, ?)', [user_id, articles_id, comments, actual_status])
 }
 
-const updateArticle = (articleId, { title, excerpt, body, category_id }) => {
-    return db.query('update articles set title = ?, excerpt = ?, body = ?, category_id = ? where id = ?', [title, excerpt, body, category_id, articleId]);
+const updateArticle = (articleId, { title, excerpt, body, slug, category_id }) => {
+    return db.query('update articles set title = ?, excerpt = ?, body = ?, slug = ?, category_id = ? where id = ?', [title, excerpt, body, slug, category_id, articleId]);
 }
 
-const updateStatusArticle = (articleId, {status}) => {
+const updateStatusArticle = (articleId, { status }) => {
     return db.query('update articles set status = ? where id = ?', [status, articleId]);
 }
 

@@ -1,4 +1,5 @@
 const ArticleModel = require('../models/article.model');
+const { transformTitle } = require('../helpers/utils');
 
 const getAllArticles = async (req, res) => {
     try {
@@ -63,12 +64,11 @@ const createArticle = async (req, res) => {
         const { title, excerpt, body, status, category_id, url, source, caption } = req.body;
         const creator_id = req.user.id;
         const author_name = req.user.name;
-        const [result] = await ArticleModel.insert({ author_name, title, excerpt, body, status, category_id, creator_id });
+        const slug = transformTitle(title);
+        const [result] = await ArticleModel.insert({ author_name, title, excerpt, body, slug, status, category_id, creator_id });
         const [image] = await ArticleModel.insertImage({ url, source });
-        console.log(image.insertId);
         const [articlesHasImages] = await ArticleModel.insertArticlesHasImages(image.insertId, result.insertId, { caption });
         const [usersHasArticles] = await ArticleModel.insertUsersHasArticles(creator_id, result.insertId)
-        console.log(articlesHasImages);
         const [article] = await ArticleModel.selectById(result.insertId);
         res.json(article[0]);
     } catch (error) {
@@ -78,15 +78,11 @@ const createArticle = async (req, res) => {
 
 const asignArticle = async (req, res) => {
     try {
-        const {user_id, comments, actual_status } = req.body;
-        const {articleId}  = req.params;
-        console.log(articleId);
-        console.log(req.body)
+        const { user_id, comments, actual_status } = req.body;
+        const { articleId } = req.params;
         const [nuevoRegistro] = await ArticleModel.insertUsersHasArticles(user_id, articleId, comments, actual_status);
         const [article] = await ArticleModel.selectById(articleId);
-        const [statusArticle] = await ArticleModel.updateStatusArticle(articleId, {status:actual_status})
-        console.log(nuevoRegistro[0]);
-        console.log(statusArticle);
+        const [statusArticle] = await ArticleModel.updateStatusArticle(articleId, { status: actual_status })
         res.json(nuevoRegistro[0]);
     } catch (error) {
         res.json({ error: error.message });
