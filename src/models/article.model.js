@@ -6,12 +6,16 @@ const selectAllPublished = () => {
     return db.query('select a.*, i.url, i.source, ai.caption from articles_has_images as ai join articles as a on a.id = ai.article_id join images as i on i.id = ai.image_id where a.status = "publicado"');
 }
 
-// const selectById = (articleId) => {
-//     return db.query('select * from articles where id = ?', [articleId]);
-// }
-
 const selectById = (articleId) => {
     return db.query('select a.*, i.url, i.source, ai.caption from articles_has_images as ai join articles as a on a.id = ai.article_id join images as i on i.id = ai.image_id where ai.article_id = ?', [articleId]);
+}
+
+const selectByStatus = (articleStatus) => {
+    return db.query('select a.*, i.url, i.source, ai.caption from articles_has_images as ai join articles as a on a.id = ai.article_id join images as i on i.id = ai.image_id where a.status = ?', [articleStatus]);
+}
+
+const selectBySlug = (slug) => {
+    return db.query('select a.*, i.url, i.source, ai.caption from articles_has_images as ai join articles as a on a.id = ai.article_id join images as i on i.id = ai.image_id where a.slug = ?', [slug]);
 }
 
 const selectByUser = (userId) => {
@@ -38,24 +42,36 @@ const insertArticlesHasImages = (imageId, articleId, { caption }) => {
     return db.query('insert into articles_has_images (image_id, article_id, caption) values (?,?,?)', [imageId, articleId, caption]);
 }
 
-const insertUsersHasArticles = (user_id, articles_id, comments, actual_status = 'borrador') => { 
-    return db.query('insert into news.users_has_articles (user_id, articles_id, comments, actual_status) values (?, ?, ?, ?)' , [user_id, articles_id, comments, actual_status])
+const insertUsersHasArticles = (user_id, articles_id, comments, actual_status = 'borrador') => {
+    return db.query('insert into news.users_has_articles (user_id, articles_id, comments, actual_status) values (?, ?, ?, ?)', [user_id, articles_id, comments, actual_status])
 }
 
 const updateArticle = (articleId, { title, excerpt, body, category_id }) => {
     return db.query('update articles set title = ?, excerpt = ?, body = ?, category_id = ? where id = ?', [title, excerpt, body, category_id, articleId]);
 }
 
-const updateStatusArticle = (articleId, {status}) => {
+const updateStatusArticle = (articleId, { status }) => {
     return db.query('update articles set status = ? where id = ?', [status, articleId]);
 }
-
-// const updateArticle = (articleId, { title, excerpt, body, category_id, url, source, caption }) => {
-//     return db.query('update articles join articles_has_images as ai on ai.article_id = articles.id join images on ai.image_id = images.id set articles.title = ?, articles.excerpt = ?, articles.body = ?, articles.category_id = ?, images.url = ?, images.source = ?, images.caption = ? WHERE articles.id = ?', [title, excerpt, body, category_id, url, source, caption, articleId]);
-// }
 
 const deleteArticle = (articleId) => {
     return db.query('delete from articles where id = ?', [articleId]);
 }
 
-module.exports = { selectAll, selectById, insert, updateArticle, deleteArticle, selectByUser, selectByCategory, selectAllCategories, selectAllPublished, insertImage, insertArticlesHasImages, insertUsersHasArticles, updateStatusArticle };
+module.exports = {
+    selectAll,
+    selectById,
+    selectBySlug,
+    selectByStatus,
+    selectAllPublished,
+    selectByUser,
+    selectByCategory,
+    selectAllCategories,
+    insert,
+    insertImage,
+    insertArticlesHasImages,
+    insertUsersHasArticles,
+    updateArticle,
+    updateStatusArticle,
+    deleteArticle
+};

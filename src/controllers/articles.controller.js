@@ -39,6 +39,24 @@ const getByUser = async (req, res) => {
     }
 }
 
+const getByStatus = async (req, res) => {
+    try {
+        const [result] = await ArticleModel.selectByStatus(articleStatus);
+        res.json(result)
+    } catch (error) {
+        res.json({ error: error.message });
+    }
+}
+
+const getBySlug = async (req, res) => {
+    try {
+        const [result] = await ArticleModel.selectBySlug(slug);
+        res.json(result)
+    } catch (error) {
+        res.json({ error: error.message });
+    }
+}
+
 const getByCategory = async (req, res) => {
     try {
         const { category } = req.params;
@@ -78,13 +96,13 @@ const createArticle = async (req, res) => {
 
 const asignArticle = async (req, res) => {
     try {
-        const {user_id, comments, actual_status } = req.body;
-        const {articleId}  = req.params;
+        const { user_id, comments, actual_status } = req.body;
+        const { articleId } = req.params;
         console.log(articleId);
         console.log(req.body)
         const [nuevoRegistro] = await ArticleModel.insertUsersHasArticles(user_id, articleId, comments, actual_status);
         const [article] = await ArticleModel.selectById(articleId);
-        const [statusArticle] = await ArticleModel.updateStatusArticle(articleId, {status:actual_status})
+        const [statusArticle] = await ArticleModel.updateStatusArticle(articleId, { status: actual_status })
         console.log(nuevoRegistro[0]);
         console.log(statusArticle);
         res.json(nuevoRegistro[0]);
@@ -115,4 +133,17 @@ const deleteArticle = async (req, res) => {
     }
 }
 
-module.exports = { getAllArticles, createArticle, getById, updateArticle, deleteArticle, getByUser, getByCategory, getAllCategories, getAllPublished, asignArticle };
+module.exports = {
+    getAllArticles,
+    getById,
+    getByUser,
+    getByCategory,
+    getAllCategories,
+    getAllPublished,
+    getByStatus,
+    getBySlug,
+    createArticle,
+    asignArticle,
+    updateArticle,
+    deleteArticle
+};
