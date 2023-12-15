@@ -81,6 +81,16 @@ const getAllCategories = async (req, res) => {
     }
 }
 
+const getByParentCategories = async (req, res) => {
+    try {
+        const { idParentCategory } = req.params;
+        const [result] = await ArticleModel.selectByParentCategory(idParentCategory);
+        res.json(result);
+    } catch (error) {
+        res.json(result);
+    }
+}
+
 const createArticle = async (req, res) => {
     try {
         const { title, excerpt, body, status, category_id, url, source, caption } = req.body;
@@ -139,6 +149,7 @@ module.exports = {
     getByUser,
     getByCategory,
     getAllCategories,
+    getByParentCategories,
     getAllPublished,
     getByStatus,
     getBySlug,
