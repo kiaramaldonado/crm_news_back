@@ -51,8 +51,9 @@ const getByStatus = async (req, res) => {
 
 const getBySlug = async (req, res) => {
     try {
+        const { slug } = req.params;
         const [result] = await ArticleModel.selectBySlug(slug);
-        res.json(result)
+        res.json(result[0])
     } catch (error) {
         res.json({ error: error.message });
     }
