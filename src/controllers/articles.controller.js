@@ -42,7 +42,10 @@ const getByUser = async (req, res) => {
 
 const getByStatus = async (req, res) => {
     try {
+        const { articleStatus } = req.params;
+        console.log(articleStatus);
         const [result] = await ArticleModel.selectByStatus(articleStatus);
+        console.log(result)
         res.json(result)
     } catch (error) {
         res.json({ error: error.message });
@@ -51,6 +54,7 @@ const getByStatus = async (req, res) => {
 
 const getBySlug = async (req, res) => {
     try {
+        const { slug } = req.params;
         const [result] = await ArticleModel.selectBySlug(slug);
         res.json(result)
     } catch (error) {
