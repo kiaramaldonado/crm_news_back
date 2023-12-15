@@ -19,7 +19,7 @@ const selectBySlug = (slug) => {
 }
 
 const selectByUser = (userId) => {
-    return db.query('select a.*, i.url, ai.caption, i.source, ua.actual_status from users_has_articles as ua join articles as a on a.id = ua.articles_id join articles_has_images as ai on ai.article_id = a.id join images as i on i.id = ai.image_id where ua.user_id = ?', [userId]);
+    return db.query('select a.*, i.url, ai.caption, i.source, ua.user_id, ua.actual_status from users_has_articles as ua join articles as a on a.id = ua.articles_id join articles_has_images as ai on ai.article_id = a.id join images as i on i.id = ai.image_id where ua.user_id = ?', [userId]);
 }
 
 const selectByCategory = (category) => {
