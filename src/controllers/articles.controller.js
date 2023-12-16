@@ -110,11 +110,11 @@ const createArticle = async (req, res) => {
 
 const asignArticle = async (req, res) => {
     try {
-        const { user_id, comments, actual_status } = req.body;
+        const { user_id, comments, actual_status, headline } = req.body;
         const { articleId } = req.params;
         const [nuevoRegistro] = await ArticleModel.insertUsersHasArticles(user_id, articleId, comments, actual_status);
         const [article] = await ArticleModel.selectById(articleId);
-        const [statusArticle] = await ArticleModel.updateStatusArticle(articleId, { status: actual_status })
+        const [statusArticle] = await ArticleModel.updateStatusArticle(articleId, { status: actual_status, headline })
         res.json(nuevoRegistro[0]);
     } catch (error) {
         res.json({ error: error.message });
@@ -124,7 +124,9 @@ const asignArticle = async (req, res) => {
 const updateArticle = async (req, res) => {
     try {
         const { articleId } = req.params;
-        const [result] = await ArticleModel.updateArticle(articleId, req.body);
+        const { title, excerpt, body, category_id, url, source, caption } = req.body;
+        const slug = transformTitle(title);
+        const [result] = await ArticleModel.updateArticle(articleId, { title, excerpt, body, slug, category_id, url, source, caption });
         const [article] = await ArticleModel.selectById(articleId);
         res.json(article[0]);
     } catch (error) {

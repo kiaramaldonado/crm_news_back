@@ -54,8 +54,8 @@ const updateArticle = (articleId, { title, excerpt, body, slug, category_id }) =
     return db.query('update articles set title = ?, excerpt = ?, body = ?, slug = ?, category_id = ? where id = ?', [title, excerpt, body, slug, category_id, articleId]);
 }
 
-const updateStatusArticle = (articleId, { status }) => {
-    return db.query('update articles set status = ? where id = ?', [status, articleId]);
+const updateStatusArticle = (articleId, { status, headline = 0 }) => {
+    return db.query('update articles set status = ?, headline = ? where id = ?', [status, headline, articleId]);
 }
 
 const deleteArticle = (articleId) => {
