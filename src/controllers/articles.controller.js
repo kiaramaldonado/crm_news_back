@@ -124,7 +124,9 @@ const asignArticle = async (req, res) => {
 const updateArticle = async (req, res) => {
     try {
         const { articleId } = req.params;
-        const [result] = await ArticleModel.updateArticle(articleId, req.body);
+        const { title, excerpt, body, category_id, url, source, caption } = req.body;
+        const slug = transformTitle(title);
+        const [result] = await ArticleModel.updateArticle(articleId, { title, excerpt, body, slug, category_id, url, source, caption });
         const [article] = await ArticleModel.selectById(articleId);
         res.json(article[0]);
     } catch (error) {
