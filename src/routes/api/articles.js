@@ -5,6 +5,7 @@ const { checkToken } = require('../../helpers/middlewares');
 router.get('/', ArticlesController.getAllArticles);
 router.get('/user', checkToken, ArticlesController.getByUser);
 router.get('/categories', ArticlesController.getAllCategories);
+router.get('/parentCategory/:idParentCategory', ArticlesController.getByParentCategories);
 router.get('/categories/:category', ArticlesController.getByCategory);
 router.get('/published', ArticlesController.getAllPublished);
 router.get('/status/:articleStatus', checkToken, ArticlesController.getByStatus);

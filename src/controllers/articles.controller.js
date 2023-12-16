@@ -56,7 +56,7 @@ const getBySlug = async (req, res) => {
     try {
         const { slug } = req.params;
         const [result] = await ArticleModel.selectBySlug(slug);
-        res.json(result)
+        res.json(result[0])
     } catch (error) {
         res.json({ error: error.message });
     }
@@ -78,6 +78,16 @@ const getAllCategories = async (req, res) => {
         res.json(result);
     } catch (error) {
         res.json({ error: error.message });
+    }
+}
+
+const getByParentCategories = async (req, res) => {
+    try {
+        const { idParentCategory } = req.params;
+        const [result] = await ArticleModel.selectByParentCategory(idParentCategory);
+        res.json(result);
+    } catch (error) {
+        res.json(result);
     }
 }
 
@@ -139,6 +149,7 @@ module.exports = {
     getByUser,
     getByCategory,
     getAllCategories,
+    getByParentCategories,
     getAllPublished,
     getByStatus,
     getBySlug,

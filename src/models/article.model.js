@@ -30,6 +30,10 @@ const selectAllCategories = () => {
     return db.query('select * from categories');
 }
 
+const selectByParentCategory = (idParentCategory) => {
+    return db.query('select a.*, i.url, ai.caption, i.source, c.parent_id, c.id from articles_has_images as ai join articles as a on a.id = ai.article_id join images as i on i.id = ai.image_id join categories as c on c.id = a.category_id where c.parent_id = ?', [idParentCategory])
+}
+
 const insert = ({ author_name, title, excerpt, body, slug, status = 'borrador', category_id, creator_id }) => {
     return db.query('insert into articles (author_name, title, excerpt, body, slug, status, category_id, creator_id) values (?,?,?,?,?,?,?,?)', [author_name, title, excerpt, body, slug, status, category_id, creator_id]);
 }
@@ -67,6 +71,7 @@ module.exports = {
     selectByUser,
     selectByCategory,
     selectAllCategories,
+    selectByParentCategory,
     insert,
     insertImage,
     insertArticlesHasImages,
