@@ -110,11 +110,11 @@ const createArticle = async (req, res) => {
 
 const asignArticle = async (req, res) => {
     try {
-        const { user_id, comments, actual_status } = req.body;
+        const { user_id, comments, actual_status, headline } = req.body;
         const { articleId } = req.params;
         const [nuevoRegistro] = await ArticleModel.insertUsersHasArticles(user_id, articleId, comments, actual_status);
         const [article] = await ArticleModel.selectById(articleId);
-        const [statusArticle] = await ArticleModel.updateStatusArticle(articleId, { status: actual_status })
+        const [statusArticle] = await ArticleModel.updateStatusArticle(articleId, { status: actual_status, headline })
         res.json(nuevoRegistro[0]);
     } catch (error) {
         res.json({ error: error.message });
