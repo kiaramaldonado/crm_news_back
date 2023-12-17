@@ -134,6 +134,17 @@ const updateArticle = async (req, res) => {
     }
 }
 
+const updateHeadline = async (req, res) => {
+    try {
+        const { articleSlug } = req.params;
+        const { headline } = req.body;
+        const [result] = await ArticleModel.updateFalseHeadline(articleSlug, { headline });
+        res.json(result);
+    } catch (error) {
+        res.json({ error: error.message });
+    }
+}
+
 const deleteArticle = async (req, res) => {
     try {
         const { articleId } = req.params;
@@ -158,5 +169,6 @@ module.exports = {
     createArticle,
     asignArticle,
     updateArticle,
+    updateHeadline,
     deleteArticle
 };

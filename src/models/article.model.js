@@ -58,6 +58,10 @@ const updateStatusArticle = (articleId, { status, headline = 0 }) => {
     return db.query('update articles set status = ?, headline = ? where id = ?', [status, headline, articleId]);
 }
 
+const updateFalseHeadline = (articleSlug, { headline = 0 }) => {
+    return db.query('update articles set headline = 0 where slug = ?', [articleSlug]);
+}
+
 const deleteArticle = (articleId) => {
     return db.query('delete from articles where id = ?', [articleId]);
 }
@@ -78,5 +82,6 @@ module.exports = {
     insertUsersHasArticles,
     updateArticle,
     updateStatusArticle,
+    updateFalseHeadline,
     deleteArticle
 };

@@ -15,6 +15,7 @@ router.get('/:articleId', ArticlesController.getById);
 router.post('/', checkToken, ArticlesController.createArticle);
 router.post('/asign/:articleId', checkToken, ArticlesController.asignArticle);
 
+router.put('/article/:articleSlug', checkToken, ArticlesController.updateHeadline);
 router.put('/:articleId', checkToken, ArticlesController.updateArticle);
 
 router.delete('/:articleId', checkToken, ArticlesController.deleteArticle);
