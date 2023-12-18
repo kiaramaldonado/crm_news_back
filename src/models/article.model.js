@@ -23,7 +23,11 @@ const selectByUser = (userId) => {
 }
 
 const selectByCategory = (category) => {
-    return db.query('select a.*, i.url, ai.caption, i.source, c.name from articles_has_images as ai join articles as a on a.id = ai.article_id join images as i on i.id = ai.image_id join categories as c on c.id = a.category_id where c.name = ?', [category]);
+    return db.query('select a.*, i.url, ai.caption, i.source, c.name from articles_has_images as ai join articles as a on a.id = ai.article_id join images as i on i.id = ai.image_id join categories as c on c.id = a.category_id where c.name = ? and a.status = "publicado"', [category]);
+}
+
+const selectByCategoryId = (id) => {
+    return db.query('select a.*, i.url, ai.caption, i.source, c.name from articles_has_images as ai join articles as a on a.id = ai.article_id join images as i on i.id = ai.image_id join categories as c on c.id = a.category_id where (c.id = ? and a.status = "publicado") or (c.parent_id = ? and a.status = "publicado")', [id, id]);
 }
 
 const selectAllCategories = () => {
@@ -74,6 +78,7 @@ module.exports = {
     selectAllPublished,
     selectByUser,
     selectByCategory,
+    selectByCategoryId,
     selectAllCategories,
     selectByParentCategory,
     insert,
