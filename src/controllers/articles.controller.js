@@ -72,6 +72,16 @@ const getByCategory = async (req, res) => {
     }
 }
 
+const getByCategoryId = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [result] = await ArticleModel.selectByCategoryId(id);
+        res.json(result)
+    } catch (error) {
+        res.json({ error: error.message });
+    }
+}
+
 const getAllCategories = async (req, res) => {
     try {
         const [result] = await ArticleModel.selectAllCategories();
@@ -161,6 +171,7 @@ module.exports = {
     getById,
     getByUser,
     getByCategory,
+    getByCategoryId,
     getAllCategories,
     getByParentCategories,
     getAllPublished,

@@ -7,6 +7,7 @@ router.get('/user', checkToken, ArticlesController.getByUser);
 router.get('/categories', ArticlesController.getAllCategories);
 router.get('/parentCategory/:idParentCategory', ArticlesController.getByParentCategories);
 router.get('/categories/:category', ArticlesController.getByCategory);
+router.get('/categories/id/:id', ArticlesController.getByCategoryId);
 router.get('/published', ArticlesController.getAllPublished);
 router.get('/status/:articleStatus', checkToken, ArticlesController.getByStatus);
 router.get('/article/:slug', ArticlesController.getBySlug);
