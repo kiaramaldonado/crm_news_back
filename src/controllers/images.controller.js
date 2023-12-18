@@ -1,10 +1,20 @@
 const ImageModel = require('../models/image.model');
 
+// const getAllImages = async (req, res) => {
+//     try {
+//         const [result] = await ImageModel.selectAll();
+//         res.json(result)
+        
+//     } catch (error) {
+//         res.json({ error: error.message });
+//     }
+// }
+
 const getAllImages = async (req, res) => {
     try {
-        const [result] = await ImageModel.selectAll();
-        res.json(result)
-        
+        const { page = 1, pageSize = 4 } = req.params;
+        const [result] = await ImageModel.selectAll(parseInt(page), parseInt(pageSize));
+        res.json(result);
     } catch (error) {
         res.json({ error: error.message });
     }
