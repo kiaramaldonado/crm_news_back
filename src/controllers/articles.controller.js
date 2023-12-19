@@ -1,5 +1,7 @@
 const ArticleModel = require('../models/article.model');
-const { transformTitle } = require('../helpers/utils');
+const { transformTitle, sendEmail } = require('../helpers/utils');
+const SubscribersModel = require('../models/subscriber.model')
+//const { sendNews } = require('../controllers/subscribers.controller');
 
 const getAllArticles = async (req, res) => {
     try {
@@ -124,7 +126,23 @@ const asignArticle = async (req, res) => {
         const { articleId } = req.params;
         const [nuevoRegistro] = await ArticleModel.insertUsersHasArticles(user_id, articleId, comments, actual_status);
         const [article] = await ArticleModel.selectById(articleId);
-        const [statusArticle] = await ArticleModel.updateStatusArticle(articleId, { status: actual_status, headline })
+        const [statusArticle] = await ArticleModel.updateStatusArticle(articleId, { status: actual_status, headline });
+        const link = `http://localhost:4200/${article[0].slug}`
+
+
+        if (actual_status === "publicado") {
+            try {
+                const [subscribers] = await SubscribersModel.selectAll();
+                const emails = await subscribers.map(subscriber => subscriber.email)
+                console.log(emails);
+                for (email of emails) {
+                    sendEmail(email, 'Aquí tienes el nuevo artículo publicado', `<a href="${link}">Enlace del artículo</a>`);
+                }
+                res.json({ success: true, message: 'Correos enviados exitosamente' });
+            } catch (error) {
+                res.json({ error: error.message });
+            }
+        }
         res.json(nuevoRegistro[0]);
     } catch (error) {
         res.json({ error: error.message });
