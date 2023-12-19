@@ -1,8 +1,8 @@
-// const selectAll = () => {
-//     return db.query('select * from images');
-// }
+const selectAll = () => {
+    return db.query('select * from images');
+}
 
-const selectAll = (page , pageSize) => {
+const selectAllPage = (page , pageSize) => {
     const offset = (page - 1) * pageSize;
     return db.query('SELECT * FROM images LIMIT ? OFFSET ?', [pageSize, offset]);
 };
@@ -12,4 +12,4 @@ const selectById = (imageId) => {
 }
 
 
-module.exports = {selectAll, selectById}
+module.exports = {selectAll, selectAllPage, selectById}
