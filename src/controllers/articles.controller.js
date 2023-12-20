@@ -1,7 +1,7 @@
 const ArticleModel = require('../models/article.model');
 const { transformTitle, sendEmail } = require('../helpers/utils');
-const SubscribersModel = require('../models/subscriber.model')
-//const { sendNews } = require('../controllers/subscribers.controller');
+const SubscribersModel = require('../models/subscriber.model');
+
 
 const getAllArticles = async (req, res) => {
     try {
@@ -127,23 +127,27 @@ const asignArticle = async (req, res) => {
         const [nuevoRegistro] = await ArticleModel.insertUsersHasArticles(user_id, articleId, comments, actual_status);
         const [article] = await ArticleModel.selectById(articleId);
         const [statusArticle] = await ArticleModel.updateStatusArticle(articleId, { status: actual_status, headline });
-        const link = `http://localhost:4200/${article[0].slug}`
+        const title = article[0].title;
+        const link = `http://localhost:4200/articulo/${article[0].slug}`
 
-
+        console.log(actual_status, statusArticle);
         if (actual_status === "publicado") {
             try {
                 const [subscribers] = await SubscribersModel.selectAll();
                 const emails = await subscribers.map(subscriber => subscriber.email)
                 console.log(emails);
                 for (email of emails) {
-                    sendEmail(email, 'Aquí tienes el nuevo artículo publicado', `<a href="${link}">Enlace del artículo</a>`);
+                    sendEmail(email, 'Novedades en Guirre Noticiero', `<p>Hemos publicado un nuevo artículo, visita nuestra página para descubrirlo: <a href=${link}>${title}</a>.</p>`);
                 }
-                res.json({ success: true, message: 'Correos enviados exitosamente' });
+
             } catch (error) {
-                res.json({ error: error.message });
+
+                console.log(error);
             }
+
         }
-        res.json(nuevoRegistro[0]);
+
+        res.json(article);
     } catch (error) {
         res.json({ error: error.message });
     }

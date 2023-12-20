@@ -27,17 +27,18 @@ const subscribe = async (req, res) => {
     }
 };
 
-const sendNews = async (req, res) => {
+const sendNews = async () => {
     try {
         const [subscribers] = await SubscribersModel.selectAll();
         const emails = await subscribers.map(subscriber => subscriber.email)
         console.log(emails);
         for (email of emails) {
-            sendEmail(email, 'prueba', 'prueba 2');
+            sendEmail(email, 'Aquí tienes el nuevo artículo publicado', '<p>Hemos publicado un nuevo artículo, visita nuestra página para descubrirlo: <a href="http://localhost:4200/guirre">Guirre</a></p>');
         }
-        res.json({ success: true, message: 'Correos enviados exitosamente' });
+
     } catch (error) {
-        res.json({ error: error.message });
+        console.log(error);
+
     }
 }
 
